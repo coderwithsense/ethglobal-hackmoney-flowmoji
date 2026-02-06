@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SiteShell from "../../_components/SiteShell";
 import SetupStepper from "../../_components/SetupStepper";
+import { requireSession, requireSetupNotCompleted } from "@/lib/route-guards";
 
 const rules = [
   { emoji: "😊", amount: "5", currency: "USDC", label: "Happy tip" },
@@ -8,7 +9,9 @@ const rules = [
   { emoji: "💧", amount: "2", currency: "USDC", label: "Quick shout" },
 ];
 
-export default function SetupTippingPage() {
+export default async function SetupTippingPage() {
+  const session = await requireSession();
+  await requireSetupNotCompleted(session.user.id);
   return (
     <SiteShell>
       <section className="space-y-8">

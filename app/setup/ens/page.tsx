@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SiteShell from "../../_components/SiteShell";
 import SetupStepper from "../../_components/SetupStepper";
+import { requireSession, requireSetupNotCompleted } from "@/lib/route-guards";
 
 const records = [
   "tip.emoji.smile = 5",
@@ -10,7 +11,9 @@ const records = [
   "tip.wallet.yellow = 0xflow...moji",
 ];
 
-export default function SetupEnsPage() {
+export default async function SetupEnsPage() {
+  const session = await requireSession();
+  await requireSetupNotCompleted(session.user.id);
   return (
     <SiteShell>
       <section className="space-y-8">

@@ -1,9 +1,11 @@
 import Link from "next/link";
 import SiteShell from "../../_components/SiteShell";
 import SetupStepper from "../../_components/SetupStepper";
-import TwitchAuthPanel from "../../_components/TwitchAuthPanel";
+import { requireSession, requireSetupNotCompleted } from "@/lib/route-guards";
 
-export default function SetupPlatformsPage() {
+export default async function SetupPlatformsPage() {
+  const session = await requireSession();
+  await requireSetupNotCompleted(session.user.id);
   return (
     <SiteShell>
       <section className="space-y-8">
@@ -56,21 +58,18 @@ export default function SetupPlatformsPage() {
             </div>
           ))}
         </div>
-        <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
-          <TwitchAuthPanel />
-          <div className="rounded-3xl border border-soft bg-white/60 p-6 text-sm text-ink-700">
-            <p className="font-semibold text-ink-900">Test chat ingestion</p>
-            <p className="mt-2">
-              Use the Twitch Test Chat page to verify emoji detection and debit
-              logs before going live.
-            </p>
-            <Link
-              href="/test-chat"
-              className="mt-4 inline-flex rounded-full border border-strong px-4 py-2 text-xs font-semibold text-ink-700"
-            >
-              Open Test Chat
-            </Link>
-          </div>
+        <div className="rounded-3xl border border-soft bg-white/60 p-6 text-sm text-ink-700">
+          <p className="font-semibold text-ink-900">Test chat ingestion</p>
+          <p className="mt-2">
+            Use the Twitch Test Chat page to verify emoji detection and debit
+            logs before going live.
+          </p>
+          <Link
+            href="/test-chat"
+            className="mt-4 inline-flex rounded-full border border-strong px-4 py-2 text-xs font-semibold text-ink-700"
+          >
+            Open Test Chat
+          </Link>
         </div>
       </section>
     </SiteShell>

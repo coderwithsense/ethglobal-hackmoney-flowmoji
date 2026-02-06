@@ -1,4 +1,5 @@
 import SiteShell from "../../_components/SiteShell";
+import TwitchConnectPanel from "../../_components/TwitchConnectPanel";
 
 export default function SettingsIntegrationsPage() {
   return (
@@ -51,6 +52,7 @@ export default function SettingsIntegrationsPage() {
             </div>
           ))}
         </div>
+        <TwitchConnectPanel />
         <div className="rounded-3xl border border-strong bg-white/70 p-6">
           <h2 className="section-title text-xl font-semibold">
             Yellow session

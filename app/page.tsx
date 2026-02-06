@@ -17,7 +17,7 @@ export default function Home() {
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
-              href="/onboarding"
+              href="/sign-up"
               className="rounded-full bg-ink-900 px-6 py-3 text-sm font-semibold text-white"
             >
               Get Started
@@ -168,7 +168,7 @@ export default function Home() {
           </div>
           <div className="flex flex-wrap gap-3 md:justify-end">
             <Link
-              href="/onboarding"
+              href="/sign-up"
               className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-ink-900"
             >
               Start Onboarding

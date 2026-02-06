@@ -1,8 +1,11 @@
 import Link from "next/link";
 import SiteShell from "../../_components/SiteShell";
 import SetupStepper from "../../_components/SetupStepper";
+import { requireSession, requireSetupNotCompleted } from "@/lib/route-guards";
 
-export default function SetupWalletPage() {
+export default async function SetupWalletPage() {
+  const session = await requireSession();
+  await requireSetupNotCompleted(session.user.id);
   return (
     <SiteShell>
       <section className="space-y-8">
@@ -17,7 +20,7 @@ export default function SetupWalletPage() {
             </p>
           </div>
           <Link
-            href="/dashboard"
+            href="/setup/complete"
             className="rounded-full bg-ink-900 px-6 py-3 text-sm font-semibold text-white"
           >
             Finish Setup

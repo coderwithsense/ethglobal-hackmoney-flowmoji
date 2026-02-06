@@ -1,4 +1,5 @@
 import SiteShell from "../_components/SiteShell";
+import { requireSession, requireSetupCompleted } from "@/lib/route-guards";
 
 const tips = [
   "@viewer123 tipped 😊 $5 on Twitch",
@@ -7,7 +8,9 @@ const tips = [
   "@mila tipped ✨ $4 on YouTube",
 ];
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const session = await requireSession();
+  await requireSetupCompleted(session.user.id);
   return (
     <SiteShell>
       <section className="space-y-10">

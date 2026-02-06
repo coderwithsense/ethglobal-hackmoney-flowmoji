@@ -1,0 +1,147 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(cuid()) @map("_id")
+  email           String?  @unique
+  username        String?  @unique
+  displayUsername String?
+  name            String?
+  image           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  sessions Session[]
+  accounts Account[]
+
+  creatorProfiles CreatorProfile[]
+
+  tipRules TipRule[]
+
+  tipEvents TipEvent[]
+
+  yellowSessions YellowSession[]
+  emailVerified  Boolean         @default(false)
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(cuid()) @map("_id")
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(cuid()) @map("_id")
+  userId                String
+  providerId            String
+  providerUserId        String?
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accountId String @unique
+  idToken   String?
+  password  String?
+
+  @@index([userId])
+  @@index([providerId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @default(cuid()) @map("_id")
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model CreatorProfile {
+  id               String   @id @default(cuid()) @map("_id")
+  userId           String   @unique
+  displayName      String?
+  ensName          String?
+  youtubeChannelId String?
+  twitchHandle     String?
+  walletAddress    String?  @unique
+  walletVerifiedAt DateTime?
+  walletSignature  String?
+  walletMessage    String?
+  setupCompleted   Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model TipRule {
+  id        String   @id @default(cuid()) @map("_id")
+  userId    String
+  emoji     String
+  amount    Int
+  currency  String   @default("USDC")
+  platform  String? // "youtube" | "twitch" | null for global
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, platform])
+}
+
+model TipEvent {
+  id        String   @id @default(cuid()) @map("_id")
+  userId    String
+  platform  String
+  emoji     String
+  amount    Int
+  currency  String   @default("USDC")
+  viewer    String?
+  messageId String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model YellowSession {
+  id        String   @id @default(cuid()) @map("_id")
+  userId    String
+  sessionId String   @unique
+  balance   Int      @default(0)
+  status    String   @default("open")
+  network   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

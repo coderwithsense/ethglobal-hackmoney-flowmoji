@@ -1,4 +1,6 @@
 import SiteShell from "../../_components/SiteShell";
+import WalletVerifyPanel from "../../_components/WalletVerifyPanel";
+import DeleteAccountPanel from "../../_components/DeleteAccountPanel";
 
 export default function SettingsProfilePage() {
   return (
@@ -36,12 +38,16 @@ export default function SettingsProfilePage() {
               Update Profile
             </button>
           </div>
-          <div className="rounded-3xl border border-soft bg-white/60 p-6 text-sm text-ink-700">
-            <p className="font-semibold text-ink-900">Public Flowmoji link</p>
-            <p className="mt-2">flowmoji.xyz/creator/flowmoji</p>
-            <p className="mt-4 text-ink-500">
-              Add this link to stream descriptions or overlays.
-            </p>
+          <div className="grid gap-6">
+            <WalletVerifyPanel />
+            <DeleteAccountPanel />
+            <div className="rounded-3xl border border-soft bg-white/60 p-6 text-sm text-ink-700">
+              <p className="font-semibold text-ink-900">Public Flowmoji link</p>
+              <p className="mt-2">flowmoji.xyz/creator/flowmoji</p>
+              <p className="mt-4 text-ink-500">
+                Add this link to stream descriptions or overlays.
+              </p>
+            </div>
           </div>
         </div>
       </section>

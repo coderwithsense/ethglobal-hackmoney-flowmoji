@@ -9,11 +9,16 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@prisma/client": "^6.4.1",
+    "@tanstack/react-query": "^5.59.15",
     "better-auth": "^1.4.18",
     "comfy.js": "^1.1.29",
     "next": "16.1.6",
+    "prisma": "^6.4.1",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "viem": "^2.21.9",
+    "wagmi": "^2.12.10"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

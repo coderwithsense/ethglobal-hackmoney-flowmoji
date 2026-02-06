@@ -1,9 +1,9 @@
 import Link from "next/link";
+import AuthHeaderActions from "./AuthHeaderActions";
 
 const navLinks = [
-  { href: "/onboarding", label: "Onboarding" },
-  { href: "/setup/platforms", label: "Setup" },
   { href: "/dashboard", label: "Dashboard" },
+  { href: "/settings/profile", label: "Settings" },
   { href: "/test-chat", label: "Test Chat" },
   { href: "/docs/getting-started", label: "Docs" },
   { href: "/extension", label: "Extension" },
@@ -36,12 +36,7 @@ export default function SiteShell({
           </nav>
           <div className="flex items-center gap-3">
             <span className="pill">Yellow + ENS</span>
-            <Link
-              href="/onboarding"
-              className="rounded-full bg-ink-900 px-4 py-2 text-sm font-semibold text-white"
-            >
-              Get Started
-            </Link>
+            <AuthHeaderActions />
           </div>
         </div>
       </header>
