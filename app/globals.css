@@ -1,26 +1,138 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --sand-50: #fbf7f1;
+  --sand-100: #f6efe4;
+  --sand-200: #efe3d1;
+  --sand-500: #c5a682;
+  --ink-900: #14110f;
+  --ink-700: #3f352e;
+  --ink-500: #6b5d52;
+  --green-500: #3bb273;
+  --sunset-500: #ff7a59;
+  --ocean-500: #3a6ff7;
+  --accent-500: #f0b429;
+  --border-strong: rgba(20, 17, 15, 0.2);
+  --border-soft: rgba(20, 17, 15, 0.12);
+  --shadow-color: rgba(20, 17, 15, 0.08);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--sand-50);
+  --color-foreground: var(--ink-900);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--sand-50);
+  color: var(--ink-900);
+  font-family: var(--font-body), system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+.app-shell {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 122, 89, 0.15), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(58, 111, 247, 0.12), transparent 50%),
+    radial-gradient(circle at 50% 90%, rgba(240, 180, 41, 0.18), transparent 45%),
+    linear-gradient(180deg, #fbf7f1 0%, #f7efe4 55%, #fbf7f1 100%);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 18px 40px var(--shadow-color);
+  backdrop-filter: blur(10px);
+}
+
+.card-strong {
+  background: #fffdfa;
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 20px 50px rgba(20, 17, 15, 0.08);
+}
+
+.text-ink-700 {
+  color: var(--ink-700);
+}
+
+.text-ink-500 {
+  color: var(--ink-500);
+}
+
+.text-sand-500 {
+  color: var(--sand-500);
+}
+
+.border-soft {
+  border-color: var(--border-soft);
+}
+
+.border-strong {
+  border-color: var(--border-strong);
+}
+
+.bg-ink-900 {
+  background: var(--ink-900);
+}
+
+.bg-sand-100 {
+  background: var(--sand-100);
+}
+
+.bg-sand-200 {
+  background: var(--sand-200);
+}
+
+.bg-ocean-500 {
+  background: var(--ocean-500);
+}
+
+.bg-sunset-500 {
+  background: var(--sunset-500);
+}
+
+.bg-green-500 {
+  background: var(--green-500);
+}
+
+.bg-accent-500 {
+  background: var(--accent-500);
+}
+
+.font-display {
+  font-family: var(--font-display), var(--font-body), sans-serif;
+}
+
+.section-title {
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.pill {
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-700);
+  background: #fff9f2;
+}
+
+.grid-dots {
+  background-image: radial-gradient(circle, rgba(20, 17, 15, 0.08) 1px, transparent 0);
+  background-size: 16px 16px;
+}
+
+.link-soft {
+  color: var(--ink-700);
+  transition: color 0.2s ease;
+}
+
+.link-soft:hover {
+  color: var(--ink-900);
 }
