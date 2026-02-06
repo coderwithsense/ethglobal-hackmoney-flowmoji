@@ -10,6 +10,7 @@ const buildMessage = (address: string) =>
 export default function WalletVerifyPanel() {
   const [status, setStatus] = useState<string | null>(null);
   const [storedAddress, setStoredAddress] = useState<string>("");
+  const [hydrated, setHydrated] = useState(false);
   const { address, isConnected } = useAccount();
   const { connectAsync, isPending: isConnecting } = useConnect();
   const { disconnectAsync } = useDisconnect();
@@ -21,6 +22,7 @@ export default function WalletVerifyPanel() {
   );
 
   useEffect(() => {
+    setHydrated(true);
     const load = async () => {
       const response = await fetch("/api/account/providers");
       if (!response.ok) return;
@@ -33,6 +35,21 @@ export default function WalletVerifyPanel() {
     };
     load();
   }, []);
+
+  if (!hydrated) {
+    return (
+      <div className="rounded-3xl border border-strong bg-white/70 p-6">
+        <p className="text-sm font-semibold text-ink-700">Wallet verification</p>
+        <p className="mt-2 text-xs text-ink-500">
+          Connect your wallet, sign a message, and store a verified address. Only
+          one address per account.
+        </p>
+        <div className="mt-4 rounded-2xl bg-sand-100 px-4 py-3 text-sm text-ink-700">
+          Loading wallet state...
+        </div>
+      </div>
+    );
+  }
 
   const connectAndSign = async () => {
     setStatus(null);
