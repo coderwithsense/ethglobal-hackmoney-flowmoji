@@ -9,6 +9,13 @@ type ChatEvent = {
   time: string;
 };
 
+type DebitEvent = {
+  user: string;
+  amount: number;
+  emoji: string[];
+  time: string;
+};
+
 const defaultMap: Record<string, number> = {
   "😊": 5,
   "🔥": 10,
@@ -26,6 +33,7 @@ export default function TwitchComfyDemo() {
   const [oauth, setOauth] = useState("");
   const [connected, setConnected] = useState(false);
   const [events, setEvents] = useState<ChatEvent[]>([]);
+  const [debits, setDebits] = useState<DebitEvent[]>([]);
   const [status, setStatus] = useState("Idle");
 
   const emojiList = useMemo(() => Object.keys(defaultMap), []);
@@ -50,13 +58,26 @@ export default function TwitchComfyDemo() {
       const detected = emojis.filter((emoji) => emojiList.includes(emoji));
 
       if (detected.length === 0) return;
+      const amount = detected.reduce((sum, emoji) => sum + defaultMap[emoji], 0);
+      const time = new Date().toLocaleTimeString();
       setEvents((prev) =>
         [
           {
             user,
             message,
             emoji: detected,
-            time: new Date().toLocaleTimeString(),
+            time,
+          },
+          ...prev,
+        ].slice(0, 6)
+      );
+      setDebits((prev) =>
+        [
+          {
+            user,
+            amount,
+            emoji: detected,
+            time,
           },
           ...prev,
         ].slice(0, 6)
@@ -129,32 +150,70 @@ export default function TwitchComfyDemo() {
           Disconnect
         </button>
       </div>
-      <div className="mt-6 grid gap-3 text-sm">
-        {events.length === 0 ? (
-          <div className="rounded-2xl bg-sand-100 px-4 py-4 text-ink-500">
-            No emoji tips detected yet. Send one of {emojiList.join(" ")} in chat.
-          </div>
-        ) : (
-          events.map((event, index) => (
-            <div
-              key={`${event.user}-${event.time}-${index}`}
-              className="rounded-2xl bg-sand-100 px-4 py-3"
-            >
-              <div className="flex items-center justify-between text-xs text-ink-500">
-                <span>@{event.user}</span>
-                <span>{event.time}</span>
-              </div>
-              <div className="mt-2 flex flex-wrap items-center gap-2">
-                <span className="font-semibold text-ink-700">{event.message}</span>
-                <span className="text-ink-500">
-                  {event.emoji
-                    .map((emoji) => `${emoji} $${defaultMap[emoji]} USDC`)
-                    .join(" · ")}
-                </span>
-              </div>
+      <div className="mt-6 grid gap-6 md:grid-cols-[1.4fr_0.8fr]">
+        <div className="grid gap-3 text-sm">
+          <p className="text-xs font-semibold uppercase text-ink-500">
+            Live chat
+          </p>
+          {events.length === 0 ? (
+            <div className="rounded-2xl bg-sand-100 px-4 py-4 text-ink-500">
+              No emoji tips detected yet. Send one of {emojiList.join(" ")} in
+              chat.
             </div>
-          ))
-        )}
+          ) : (
+            events.map((event, index) => (
+              <div
+                key={`${event.user}-${event.time}-${index}`}
+                className="rounded-2xl bg-sand-100 px-4 py-3"
+              >
+                <div className="flex items-center justify-between text-xs text-ink-500">
+                  <span>@{event.user}</span>
+                  <span>{event.time}</span>
+                </div>
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  <span className="font-semibold text-ink-700">
+                    {event.message}
+                  </span>
+                  <span className="text-ink-500">
+                    {event.emoji
+                      .map((emoji) => `${emoji} $${defaultMap[emoji]} USDC`)
+                      .join(" · ")}
+                  </span>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+        <div className="grid gap-3 text-sm">
+          <p className="text-xs font-semibold uppercase text-ink-500">
+            Debit log
+          </p>
+          {debits.length === 0 ? (
+            <div className="rounded-2xl bg-sand-100 px-4 py-4 text-ink-500">
+              Debits will appear here when emoji tips are detected.
+            </div>
+          ) : (
+            debits.map((debit, index) => (
+              <div
+                key={`${debit.user}-${debit.time}-${index}`}
+                className="rounded-2xl bg-sand-100 px-4 py-3"
+              >
+                <div className="flex items-center justify-between text-xs text-ink-500">
+                  <span>@{debit.user}</span>
+                  <span>{debit.time}</span>
+                </div>
+                <div className="mt-2 flex items-center justify-between">
+                  <span className="text-ink-700">
+                    {debit.emoji.join(" ")}
+                  </span>
+                  <span className="font-semibold text-ink-900">
+                    -${debit.amount} USDC
+                  </span>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ const navLinks = [
   { href: "/onboarding", label: "Onboarding" },
   { href: "/setup/platforms", label: "Setup" },
   { href: "/dashboard", label: "Dashboard" },
+  { href: "/test-chat", label: "Test Chat" },
   { href: "/docs/getting-started", label: "Docs" },
   { href: "/extension", label: "Extension" },
 ];
